@@ -21,6 +21,7 @@ class CoderAction {
 	protected $dateTime;
 
 	public function setDateTime(DateTime $dt) {
+		$dt->setTimezone(new DateTimeZone('UTC'));
 		$this->dateTime = $dt;
 	}
 
