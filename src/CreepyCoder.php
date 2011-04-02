@@ -35,6 +35,8 @@ print_r($dataManager->getData());
 print(count($dataManager->getData()));
 
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteHourOfDayData.php';
-
 $dataManager->writeData(new WriteHourOfDayData(array()));
+
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
+$dataManager->writeData(new WriteDayOfWeekData(array()));
 
