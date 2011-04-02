@@ -23,6 +23,10 @@ class GitCommit extends CoderAction {
 
 class ReadGit extends BaseReadClass {
 
+	public function process() {
+
+
+	}
 
 
 }
