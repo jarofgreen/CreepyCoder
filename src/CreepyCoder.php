@@ -40,3 +40,7 @@ $dataManager->writeData(new WriteHourOfDayData(array()));
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
 $dataManager->writeData(new WriteDayOfWeekData(array()));
 
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteICalData.php';
+$dataManager->writeData(new WriteICalData(array('file'=>'out.ical')));
+
+
