@@ -22,13 +22,39 @@ class WriteDayOfWeekData extends BaseWriteClass {
 	public function write() {
 
 		$data = array();
-		$data['Sun'] = $data['Mon'] = $data['Tue'] = $data['Wed'] = $data['Thu'] = $data['Fri'] = $data['Sat'] = 0;
-
+		// these are set in the order we want them to appear in the output.
+		$data['Mon'] = 0;
+		$data['Tue'] = 0;
+		$data['Wed'] = 0;
+		$data['Thu'] = 0;
+		$data['Fri'] = 0;
+		$data['Sat'] = 0;
+		$data['Sun'] = 0;
+		
 		foreach($this->dataManager->getData() as $item) {
 			$data[$item->getDateTimeAs('D')]++;
 		}
 
-		print_r($data);
+		if (isset($this->configData['file']) && $this->configData['file']) {
+ 
+			if (!$handle = fopen($this->configData['file'], 'w')) {
+				throw new Exception("Cannot open file");
+			}
+
+			$this->fwrite($handle,"Day,Events\r\n");
+
+			foreach($data as $day=>$commits) {
+				$this->fwrite($handle,$day.",".$commits."\r\n");
+			}
+
+			fclose($handle);
+		}
+	}
+
+	private function fwrite($handle,$data) {
+		if (fwrite($handle, $data) === FALSE) {
+			throw new Exception("Cannot write to file");
+		}
 	}
 
 }

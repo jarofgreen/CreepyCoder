@@ -35,10 +35,10 @@ print_r($dataManager->getData());
 print(count($dataManager->getData()));
 
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteHourOfDayData.php';
-$dataManager->writeData(new WriteHourOfDayData(array()));
+$dataManager->writeData(new WriteHourOfDayData(array('file'=>'hourOfDay.csv')));
 
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
-$dataManager->writeData(new WriteDayOfWeekData(array()));
+$dataManager->writeData(new WriteDayOfWeekData(array('file'=>'dayOfWeek.csv')));
 
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteICalData.php';
 $dataManager->writeData(new WriteICalData(array('file'=>'out.ical')));

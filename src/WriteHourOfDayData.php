@@ -28,8 +28,30 @@ class WriteHourOfDayData extends BaseWriteClass {
 			$data[intval($item->getDateTimeAs('G'))]++;
 		}
 
-		print_r($data);
+		if (isset($this->configData['file']) && $this->configData['file']) {
+ 
+			if (!$handle = fopen($this->configData['file'], 'w')) {
+				throw new Exception("Cannot open file");
+			}
+
+			$this->fwrite($handle,"Hour,Events\r\n");
+
+			foreach($data as $hour=>$commits) {
+				$this->fwrite($handle,$hour.",".$commits."\r\n");
+			}
+
+			fclose($handle);
+		}
+
+
 	}
+
+	private function fwrite($handle,$data) {
+		if (fwrite($handle, $data) === FALSE) {
+			throw new Exception("Cannot write to file");
+		}
+	}
+
 
 }
 
