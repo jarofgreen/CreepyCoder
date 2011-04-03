@@ -17,7 +17,7 @@
 **/
 
 
-class GitCommit extends CoderAction {
+class GitCommitAction extends CoderAction {
 
 }
 
