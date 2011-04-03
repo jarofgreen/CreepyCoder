@@ -42,9 +42,9 @@ class WriteDayOfWeekData extends BaseWriteClass {
 				$dataArray[] = intval($commits / $maxCommits * 100);
 				$labelArray[] = $day;
 			}
-			$url = 'http://chart.apis.google.com/chart?cht=bvg&chtt=Hour+Of+Day&chs=400x300&chxt=x&chxl=0:|'.implode('|',$labelArray).'&chd=t:'.implode(',',$dataArray);
+			$url = 'http://chart.apis.google.com/chart?cht=bvg&chtt=Hour+Of+Day&chs=220x300&chxt=x&chxl=0:|'.implode('|',$labelArray).'&chd=t:'.implode(',',$dataArray);
 
-			print $url;
+			print "URL: $url \n\n";
 		}
 
 		if (isset($this->configData['file']) && $this->configData['file']) {
