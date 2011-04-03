@@ -28,7 +28,7 @@ class WriteHourOfDayData extends BaseWriteClass {
 			$data[intval($item->getDateTimeAs('G'))]++;
 		}
 
-		if (true) {
+		if (isset($this->configData['graphfile']) && $this->configData['graphfile']) {
 			$maxCommits = max($data);
 			$dataArray = $labelArray = array();
 			foreach($data as $day=>$commits) {
@@ -38,6 +38,16 @@ class WriteHourOfDayData extends BaseWriteClass {
 			$url = 'http://chart.apis.google.com/chart?cht=bvg&chtt=Hour+Of+Day&chs=700x400&chbh=18&chxt=x&chxl=0:|'.implode('|',$labelArray).'&chd=t:'.implode(',',$dataArray);
 
 			print "URL: $url \n\n";
+
+			$ch = curl_init($url);
+			$fp = fopen($this->configData['graphfile'], "w");
+			curl_setopt($ch, CURLOPT_FILE, $fp);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_exec($ch);
+			curl_close($ch);
+			fclose($fp);
+
+
 		}
 
 		if (isset($this->configData['file']) && $this->configData['file']) {
