@@ -19,9 +19,18 @@
 
 class WriteICalData extends BaseWriteClass {
 
+	protected $file;
+
+	public function __construct($configData = array()) {
+		if (get_class($configData) == 'DOMElement') {
+			$this->file = $configData->getAttribute('File');
+		}
+		parent::__construct($configData);
+	}
+
 	public function write() {
 
-		if (!$handle = fopen($this->configData['file'], 'w')) {
+		if (!$handle = fopen($this->file, 'w')) {
 			throw new Exception("Cannot open file");
 		}
 

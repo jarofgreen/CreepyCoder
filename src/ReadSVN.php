@@ -23,12 +23,27 @@ class SVNCommitAction extends CoderAction {
 
 class ReadSVN extends BaseReadClass {
 
-	public function process() {
+	protected $repo;
+	protected $authors;
 
-		$authors = isset($this->configData['authors']) && is_array($this->configData['authors']) ? $this->configData['authors'] : null;
+	public function __construct($configData = array()) {
+		if (get_class($configData) == 'DOMElement') {
+			$this->repo = $configData->getAttribute('URL');
+			$list = $configData->getElementsByTagName('Author');
+			if ($list->length > 0) {
+				$this->authors = array();
+				for($pos=0; $pos<$list->length ; $pos++) {
+					$this->authors[] = $list->item($pos)->getAttribute('UserName');
+				}
+			}
+		}
+		parent::__construct($configData);
+	}
+
+	public function process() {
 	
 		$out = array();
-		exec("svn log --xml ".$this->configData['repo'], $out);
+		exec("svn log --xml ".$this->repo, $out);
 	
 		$xmlDoc = new DOMDocument();
 		$xmlDoc->loadXML(implode('',$out));
@@ -37,7 +52,7 @@ class ReadSVN extends BaseReadClass {
 		$logEntryListLength = $logEntryList->length;
 		for($pos=0; $pos<$logEntryListLength; $pos++) {
 			$x = $logEntryList->item($pos);
-			if (is_null($authors) || in_array($x->getElementsByTagName('author')->item(0)->textContent,$authors)) {
+			if (is_null($this->authors) || in_array($x->getElementsByTagName('author')->item(0)->textContent,$this->authors)) {
 				$data = new SVNCommitAction();
 				$data->setDateTime(new DateTime($x->getElementsByTagName('date')->item(0)->textContent));
 				$this->dataManager->addData($data);

@@ -19,6 +19,20 @@
 
 class WriteHourOfDayData extends BaseWriteClass {
 
+
+
+	protected $graph;
+	protected $csv;
+
+	public function __construct($configData = array()) {
+		if (get_class($configData) == 'DOMElement') {
+			$this->graph = $configData->getAttribute('GraphFile');
+			$this->csv = $configData->getAttribute('CSVFile');
+		}
+		parent::__construct($configData);
+	}
+
+
 	public function write() {
 
 		$data = array();
@@ -28,7 +42,7 @@ class WriteHourOfDayData extends BaseWriteClass {
 			$data[intval($item->getDateTimeAs('G'))]++;
 		}
 
-		if (isset($this->configData['graphfile']) && $this->configData['graphfile']) {
+		if ($this->graph) {
 			$maxCommits = max($data);
 			$dataArray = $labelArray = array();
 			foreach($data as $day=>$commits) {
@@ -40,19 +54,17 @@ class WriteHourOfDayData extends BaseWriteClass {
 			print "URL: $url \n\n";
 
 			$ch = curl_init($url);
-			$fp = fopen($this->configData['graphfile'], "w");
+			$fp = fopen($this->graph, "w");
 			curl_setopt($ch, CURLOPT_FILE, $fp);
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_exec($ch);
 			curl_close($ch);
 			fclose($fp);
-
-
 		}
 
-		if (isset($this->configData['file']) && $this->configData['file']) {
+		if ($this->csv) {
  
-			if (!$handle = fopen($this->configData['file'], 'w')) {
+			if (!$handle = fopen($this->csv, 'w')) {
 				throw new Exception("Cannot open file");
 			}
 

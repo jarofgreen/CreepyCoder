@@ -22,16 +22,36 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadGit.php';
 
 class ReadGitHub extends BaseReadClass {
 
+	protected $userName;
+	protected $repo;
+	protected $branch;
+	
+	protected $authors;
+
+	public function __construct($configData = array()) {
+		if (get_class($configData) == 'DOMElement') {
+			$this->userName = $configData->getAttribute('UserName');
+			$this->repo = $configData->getAttribute('Repository');
+			$this->branch = $configData->getAttribute('Branch');
+			$list = $configData->getElementsByTagName('Author');
+			if ($list->length > 0) {
+				$this->authors = array();
+				for($pos=0; $pos<$list->length ; $pos++) {
+					$this->authors[] = $list->item($pos)->getAttribute('Email');
+				}
+			}
+		}
+		parent::__construct($configData);
+	}
+
 	public function process() {
 
 		
-		$this->readBranchFromRepository($this->configData['userName'],$this->configData['repository'],$this->configData['branch']);
+		$this->readBranchFromRepository($this->userName,$this->repo,$this->branch);
 
 	}
 
 	private function readBranchFromRepository($userName, $repository, $branch) {
-
-		$authors = isset($this->configData['authors']) && is_array($this->configData['authors']) ? $this->configData['authors'] : null;
 
 		$page = 1;
 		$gotResultsLastTime = false;
@@ -50,7 +70,7 @@ class ReadGitHub extends BaseReadClass {
 			if ($data->commits && count($data->commits) > 0) {
 				$gotResultsLastTime = true;
 				foreach($data->commits as $idx=>$commit) {
-					if (is_null($authors) || in_array($commit->author->email,$authors)) {
+					if (is_null($this->authors) || in_array($commit->author->email,$this->authors)) {
 						$data = new GitCommitAction();
 						$data->setDateTime(new DateTime($commit->authored_date));
 						$this->dataManager->addData($data);

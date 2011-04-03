@@ -1,0 +1,11 @@
+<config>
+	<ReadSVN URL="repositoryAddress">
+		<Author UserName="un"/>
+	</ReadSVN>
+	<ReadGitHub UserName="un" Repository="r" Branch="master">
+		<Author Email="e"/>
+	</ReadGitHub>
+	<WriteHourOfDayData  GraphFile="HourOfDay.png" CSVFile="HourOfDay.csv"/>
+	<WriteDayOfWeekData  GraphFile="DayOfWeek.png" CSVFile="DayOfWeek.csv"/>
+	<WriteICalData  File="DayOfWeek.ical" />
+</config>

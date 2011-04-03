@@ -21,26 +21,71 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'BaseReadClass.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'BaseWriteClass.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'CoderAction.php';
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadSVN.php';
 
+
+$opts = getopt('c:');
+
+$configXML  = file_get_contents($opts['c']);
+$xmlDoc = new DOMDocument();
+$xmlDoc->loadXML($configXML);
 
 $dataManager = new DataManager();
 
-$dataManager->addReader(new ReadSVN(array('repo'=>'https://elastik.svn.sourceforge.net/svnroot/elastik/trunk','authors'=>array('jarofgreen'))));
+#################################### set input
+
+$configList = $xmlDoc->getElementsByTagName('ReadSVN');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadSVN.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->addReader(new ReadSVN($configList->item($pos)));
+	}
+}
+
+
+$configList = $xmlDoc->getElementsByTagName('ReadGitHub');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadGitHub.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->addReader(new ReadGitHub($configList->item($pos)));
+	}
+}
+
+
+#################################### process input
 
 $dataManager->process();
+#print_r($dataManager->getData());
+#print(count($dataManager->getData()));
 
-print_r($dataManager->getData());
 
-print(count($dataManager->getData()));
+#################################### output
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteHourOfDayData.php';
-$dataManager->writeData(new WriteHourOfDayData(array('file'=>'hourOfDay.csv')));
+$configList = $xmlDoc->getElementsByTagName('WriteHourOfDayData');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteHourOfDayData.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->writeData(new WriteHourOfDayData($configList->item($pos)));
+	}
+}
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
-$dataManager->writeData(new WriteDayOfWeekData(array('file'=>'dayOfWeek.csv')));
+$configList = $xmlDoc->getElementsByTagName('WriteDayOfWeekData');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->writeData(new WriteDayOfWeekData($configList->item($pos)));
+	}
+}
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteICalData.php';
-$dataManager->writeData(new WriteICalData(array('file'=>'out.ical')));
-
+$configList = $xmlDoc->getElementsByTagName('WriteICalData');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteICalData.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->writeData(new WriteICalData($configList->item($pos)));
+	}
+}
 
