@@ -28,6 +28,7 @@ class WriteICalData extends BaseWriteClass {
 		parent::__construct($configData);
 	}
 
+	/** @todo Add Timezone to output **/
 	public function write() {
 
 		if (!$handle = fopen($this->file, 'w')) {

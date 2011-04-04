@@ -21,6 +21,7 @@ abstract class BaseReadClass {
 
 	protected $configData;	
 
+	/** @var DataManager **/
 	protected $dataManager;
 
 	public function __construct($configData = array()) {
@@ -31,6 +32,10 @@ abstract class BaseReadClass {
 		$this->dataManager = $dm;
 	}
 
+	/** Run code to actually get data. 
+	 * Data should be represented in a class that extends CoderAction - call $this->dataManager->addData to save the data.
+	 * you can also call $this->dataManager->addReader() - so one reader can poll something and spawn more readers. eg poll a GitHub account and add a new reader for each project found.
+	 **/
 	abstract public function process();
 
 }

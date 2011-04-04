@@ -20,6 +20,7 @@ abstract class BaseWriteClass {
 
 	protected $configData;	
 
+	/** @var DataManager **/
 	protected $dataManager;
 
 	public function __construct($configData = array()) {
@@ -30,6 +31,7 @@ abstract class BaseWriteClass {
 		$this->dataManager = $dm;
 	}
 
+	/** Run code to actually write data **/
 	abstract public function write();
 
 }

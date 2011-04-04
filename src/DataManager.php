@@ -22,11 +22,13 @@ class DataManager {
 
 	protected $data = array();
 
+	/** Adds readers to list. Readers are not run yet. **/
 	public function addReader(BaseReadClass $reader) {
 		$reader->setDataManager($this);
 		$this->readers[] = $reader;
 	}
 
+	/** Runs all readers, including any new ones that get added to the list as existing readers run. **/
 	public function process() {
 		$i = 0;
 		// list of readers may increase when we are inside this loop so we must check loop limits every iteration.
@@ -36,12 +38,14 @@ class DataManager {
 		}
 	}
 
+	/** called by a runner to store a piece of data **/
 	public function addData(CoderAction $action) {
 		$this->data[] = $action;
 	}
 
 	public function getData() { return $this->data; }
 
+	/** takes a writer and runs it immediately - no waiting list **/
 	public function writeData(BaseWriteClass $writer) {
 		$writer->setDataManager($this);
 		$writer->write();
