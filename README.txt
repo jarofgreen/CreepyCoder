@@ -13,5 +13,5 @@ php src/CreepyCoder.php -c config.xml
 
 
 Open Source under the GPLv3 license!
-For more see http://jarofgreen.co.uk
+For more see http://jarofgreen.co.uk/tag/creepycoder/
 
