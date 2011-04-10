@@ -7,5 +7,5 @@
 	</ReadGitHub>
 	<WriteHourOfDayData  GraphFile="HourOfDay.png" CSVFile="HourOfDay.csv"/>
 	<WriteDayOfWeekData  GraphFile="DayOfWeek.png" CSVFile="DayOfWeek.csv"/>
-	<WriteICalData  File="DayOfWeek.ical" />
+	<WriteICalData  File="Data.ical" />
 </config>
