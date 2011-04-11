@@ -89,3 +89,12 @@ if ($configListLength > 0) {
 	}
 }
 
+$configList = $xmlDoc->getElementsByTagName('WriteDayOfWeekAndHourOfDayData');
+$configListLength = $configList->length;
+if ($configListLength > 0) {
+	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekAndHourOfDayData.php';
+	for($pos=0; $pos<$configListLength; $pos++) {
+		$dataManager->writeData(new WriteDayOfWeekAndHourOfDayData($configList->item($pos)));
+	}
+}
+

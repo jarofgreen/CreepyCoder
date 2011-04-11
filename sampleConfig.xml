@@ -5,6 +5,7 @@
 	<ReadGitHub UserName="un" Repository="r" Branch="master">
 		<Author Email="e"/>
 	</ReadGitHub>
+	<WriteDayOfWeekAndHourOfDayData  GraphFile="WriteDayOfWeekAndHourOfDayData.png" CSVFile="WriteDayOfWeekAndHourOfDayData.csv"/>
 	<WriteHourOfDayData  GraphFile="HourOfDay.png" CSVFile="HourOfDay.csv"/>
 	<WriteDayOfWeekData  GraphFile="DayOfWeek.png" CSVFile="DayOfWeek.csv"/>
 	<WriteICalData  File="Data.ical" />
