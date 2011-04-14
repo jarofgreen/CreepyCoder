@@ -9,4 +9,5 @@
 	<WriteHourOfDayData  GraphFile="HourOfDay.png" CSVFile="HourOfDay.csv"/>
 	<WriteDayOfWeekData  GraphFile="DayOfWeek.png" CSVFile="DayOfWeek.csv"/>
 	<WriteICalData  File="Data.ical" />
+	<WriteDB  DSN="mysql:host=localhost;dbname=CreepyCoder" UserName="cc" Password="cc" TableName="data" TimeFieldName="data" />
 </config>
