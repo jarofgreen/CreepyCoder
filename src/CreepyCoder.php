@@ -25,6 +25,8 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'CoderAction.php';
 
 $opts = getopt('c:');
 
+if (!isset($opts['c'])) die('You must set a configc file with the -c option!');
+
 $configXML  = file_get_contents($opts['c']);
 $xmlDoc = new DOMDocument();
 $xmlDoc->loadXML($configXML);
