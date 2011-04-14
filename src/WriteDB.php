@@ -25,16 +25,19 @@ class WriteDB extends BaseWriteClass {
 	protected $password = "cc";
 	protected $tableName = "data";
 	protected $timeFieldName = "data";
+	protected $deleteBeforeInsert = false;
 
 
 	public function __construct($configData = array()) {
 		if (get_class($configData) == 'DOMElement') {
 			$this->dsn = $configData->getAttribute('DSN');
-			// TODO: Only
 			if ($configData->hasAttribute('UserName')) $this->userName = $configData->getAttribute('UserName');
 			if ($configData->hasAttribute('Password')) $this->password = $configData->getAttribute('Password');
 			if ($configData->hasAttribute('TableName')) $this->tableName = $configData->getAttribute('TableName');
 			if ($configData->hasAttribute('TimeFieldName')) $this->timeFieldName = $configData->getAttribute('TimeFieldName');
+			if ($configData->hasAttribute('DeleteBeforeInsert')) {
+				$this->deleteBeforeInsert = substr(trim(strtolower($configData->getAttribute('DeleteBeforeInsert'))),0,1) == "y" ? true : false;
+			}
 		}
 		parent::__construct($configData);
 	}
@@ -44,8 +47,11 @@ class WriteDB extends BaseWriteClass {
 		$pdo = new PDO($this->dsn, $this->userName, $this->password);
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		$stat = $pdo->prepare("INSERT INTO ".$this->tableName." (".$this->timeFieldName.") VALUES (:d)");
+		if ($this->deleteBeforeInsert) {
+			$pdo->exec("DELETE FROM ".$this->tableName);
+		}
 
+		$stat = $pdo->prepare("INSERT INTO ".$this->tableName." (".$this->timeFieldName.") VALUES (:d)");
 		foreach($this->dataManager->getData() as $item) {
 			$stat->bindValue('d', $item->getDateTimeAs('Y-m-d H:i:s'), PDO::PARAM_STR);
 			$stat->execute();
