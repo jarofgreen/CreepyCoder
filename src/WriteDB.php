@@ -42,8 +42,9 @@ class WriteDB extends BaseWriteClass {
 	public function write() {
 
 		$pdo = new PDO($this->dsn, $this->userName, $this->password);
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		$stat = $pdo->prepare("INSERT INTO ".$this->tableName." SET ".$this->timeFieldName."=:d");
+		$stat = $pdo->prepare("INSERT INTO ".$this->tableName." (".$this->timeFieldName.") VALUES (:d)");
 
 		foreach($this->dataManager->getData() as $item) {
 			$stat->bindValue('d', $item->getDateTimeAs('Y-m-d H:i:s'), PDO::PARAM_STR);
