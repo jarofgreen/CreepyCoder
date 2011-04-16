@@ -34,26 +34,16 @@ $xmlDoc->loadXML($configXML);
 $dataManager = new DataManager();
 
 #################################### set input
-
-$configList = $xmlDoc->getElementsByTagName('ReadSVN');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadSVN.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->addReader(new ReadSVN($configList->item($pos)));
+foreach(array('ReadSVN','ReadGitHub') as $mod) {
+	$configList = $xmlDoc->getElementsByTagName($mod);
+	$configListLength = $configList->length;
+	if ($configListLength > 0) {
+		require dirname(__FILE__).DIRECTORY_SEPARATOR.$mod.'.php';
+		for($pos=0; $pos<$configListLength; $pos++) {
+			$dataManager->addReader(new $mod($configList->item($pos)));
+		}
 	}
 }
-
-
-$configList = $xmlDoc->getElementsByTagName('ReadGitHub');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'ReadGitHub.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->addReader(new ReadGitHub($configList->item($pos)));
-	}
-}
-
 
 #################################### process input
 
@@ -64,57 +54,14 @@ $dataManager->process();
 
 #################################### output
 
-$configList = $xmlDoc->getElementsByTagName('WriteHourOfDayData');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteHourOfDayData.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteHourOfDayData($configList->item($pos)));
-	}
-}
-
-$configList = $xmlDoc->getElementsByTagName('WriteDayOfWeekData');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekData.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteDayOfWeekData($configList->item($pos)));
-	}
-}
-
-$configList = $xmlDoc->getElementsByTagName('WriteICalData');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteICalData.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteICalData($configList->item($pos)));
-	}
-}
-
-$configList = $xmlDoc->getElementsByTagName('WriteDayOfWeekAndHourOfDayData');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDayOfWeekAndHourOfDayData.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteDayOfWeekAndHourOfDayData($configList->item($pos)));
-	}
-}
-
-$configList = $xmlDoc->getElementsByTagName('WriteDB');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteDB.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteDB($configList->item($pos)));
-	}
-}
-
-$configList = $xmlDoc->getElementsByTagName('WriteRangeByMonth');
-$configListLength = $configList->length;
-if ($configListLength > 0) {
-	require dirname(__FILE__).DIRECTORY_SEPARATOR.'WriteRangeByMonth.php';
-	for($pos=0; $pos<$configListLength; $pos++) {
-		$dataManager->writeData(new WriteRangeByMonth($configList->item($pos)));
+foreach(array('WriteHourOfDayData','WriteDayOfWeekData','WriteICalData','WriteDayOfWeekAndHourOfDayData','WriteDB','WriteRangeByMonth') as $mod) {
+	$configList = $xmlDoc->getElementsByTagName($mod);
+	$configListLength = $configList->length;
+	if ($configListLength > 0) {
+		require dirname(__FILE__).DIRECTORY_SEPARATOR.$mod.'.php';
+		for($pos=0; $pos<$configListLength; $pos++) {
+			$dataManager->writeData(new $mod($configList->item($pos)));
+		}
 	}
 }
 
