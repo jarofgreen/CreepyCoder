@@ -8,6 +8,7 @@
 	<WriteDayOfWeekAndHourOfDayData  GraphFile="WriteDayOfWeekAndHourOfDayData.png" CSVFile="WriteDayOfWeekAndHourOfDayData.csv"/>
 	<WriteHourOfDayData  GraphFile="HourOfDay.png" CSVFile="HourOfDay.csv"/>
 	<WriteDayOfWeekData  GraphFile="DayOfWeek.png" CSVFile="DayOfWeek.csv"/>
+	<WriteRangeByMonth  GraphFile="RangeByMonth.png" CSVFile="RangeByMonth.csv"/>
 	<WriteICalData  File="Data.ical" />
 	<WriteDB  DSN="mysql:host=localhost;dbname=CreepyCoder" UserName="cc" Password="cc" 
 		TableName="data" TimeFieldName="data" DeleteBeforeInsert="no" />
