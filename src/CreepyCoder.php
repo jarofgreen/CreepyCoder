@@ -25,7 +25,7 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'CoderAction.php';
 
 $opts = getopt('c:');
 
-if (!isset($opts['c'])) die('You must set a configc file with the -c option!');
+if (!isset($opts['c'])) die("You must set a configc file with the -c option!\n");
 
 $configXML  = file_get_contents($opts['c']);
 $xmlDoc = new DOMDocument();
@@ -34,7 +34,7 @@ $xmlDoc->loadXML($configXML);
 $dataManager = new DataManager();
 
 #################################### set input
-foreach(array('ReadSVN','ReadGitHub') as $mod) {
+foreach(array('ReadSVN','ReadGitHub','ReadGit') as $mod) {
 	$configList = $xmlDoc->getElementsByTagName($mod);
 	$configListLength = $configList->length;
 	if ($configListLength > 0) {
