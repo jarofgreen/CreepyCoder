@@ -51,6 +51,7 @@ $dataManager->process();
 #print_r($dataManager->getData());
 #print(count($dataManager->getData()));
 
+if (!$dataManager->hasData()) die("No data found!\n");
 
 #################################### output
 

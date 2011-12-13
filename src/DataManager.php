@@ -44,6 +44,7 @@ class DataManager {
 	}
 
 	public function getData() { return $this->data; }
+	public function hasData() { return count($this->data) > 0; }
 
 	/** takes a writer and runs it immediately - no waiting list **/
 	public function writeData(BaseWriteClass $writer) {
